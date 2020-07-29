@@ -8,7 +8,7 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {checkToken} from '@/common/Utils';
 // eslint-disable-next-line no-unused-vars
-import {HttpClientConfig} from 'index.ts';
+import {HttpClientConfig} from '@/common/index.ts';
 import {Loading} from 'element-ui';
 
 class HttpClient {
@@ -16,7 +16,7 @@ class HttpClient {
 
 	constructor() {
 		this.#axios = axios.create({
-			baseURL: process.env.VUE_APP_BASE_API_URL + '/api',
+			baseURL: '/api',
 			timeout: 8000
 		});
 

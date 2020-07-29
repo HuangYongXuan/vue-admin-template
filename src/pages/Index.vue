@@ -5,15 +5,13 @@
 </template>
 
 <script>
-	import Request from '@/common/Request';
-
 	export default {
 		name: 'Index',
 		data() {
 			return {};
 		},
-		created() {
-			Request.get('/ads', {}, {needToken: true})
+		mounted() {
+			this.$store.dispatch('login')
 		},
 		computed: {},
 		methods: {},
@@ -22,6 +20,6 @@
 </script>
 
 <style scoped lang="scss">
-	.md-index{
+	.md-index {
 	}
 </style>

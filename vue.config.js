@@ -43,6 +43,15 @@ module.exports = {
 			loaders: ['babel-loader?cacheDirectory=true'],
 			threadPool: happyThreadPool
 		}));
+		config.resolve.extensions = ['.ts', '.tsx', '.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'];
+		config.module.rules.push({
+			test: /\.tsx?$/,
+			loader: 'ts-loader',
+			exclude: /node_modules/,
+			options: {
+				appendTsSuffixTo: [/\.vue$/]
+			}
+		});
 	},
 	chainWebpack: config => {
 		if (process.env.NODE_ENV === 'production') {

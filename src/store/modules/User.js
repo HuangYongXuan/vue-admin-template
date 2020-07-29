@@ -4,6 +4,8 @@
  * @date        2020/7/29 1:49 下午
  * @version     1.0
  */
+import userApi from '@/common/apis/user';
+
 export default {
 	state: {
 		user: {}
@@ -16,7 +18,9 @@ export default {
 	actions: {
 		// eslint-disable-next-line no-unused-vars
 		async login({commit}, data) {
-			// TODO login
+			return await userApi.login(data).then(data => {
+				console.info(data)
+			})
 		}
 	},
 	getters: {

@@ -31,13 +31,14 @@ export const checkToken = async (options) => {
 
 	// eslint-disable-next-line no-async-promise-executor
 	return new Promise(async (resolve) => {
+		if (!options.needToken) {
+			return resolve();
+		}
 		if (accessToken) return resolve();
 		else if (refreshToken) {
-			if (options.needToken) {
-				await store.dispatch('refreshToken').then(() => {
-					resolve();
-				});
-			}
+			await store.dispatch('refreshToken').then(() => {
+				resolve();
+			});
 		} else {
 			console.info('用户没有登录');
 		}

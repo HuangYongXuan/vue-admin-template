@@ -26,6 +26,10 @@
     "happypack": "^5.0.1",
     "node-sass": "^4.14.1",
     "sass-loader": "^9.0.2",
+    "ts-loader": "^8.0.1",
+    "typescript": "^3.9.7",
+    "vue-class-component": "^7.2.5",
+    "vue-property-decorator": "^9.0.0",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

@@ -13,7 +13,7 @@ Vue.use(Vuex);
 import User from '@/store/modules/User';
 
 const modules = {
-	...User
+	User
 };
 
 const VueLocalSyncPlugin = new VuexLocalSync({
