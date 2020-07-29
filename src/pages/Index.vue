@@ -1,12 +1,14 @@
 <template>
-	<div class="md-index">
-		123
-	</div>
+	<main-layout>
+
+	</main-layout>
 </template>
 
 <script>
+	import MainLayout from '@/components/layout/MainLayout';
 	export default {
 		name: 'Index',
+		components: {MainLayout},
 		data() {
 			return {};
 		},

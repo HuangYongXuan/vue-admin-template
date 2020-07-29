@@ -11,6 +11,8 @@ import {checkToken} from '@/common/Utils';
 import {HttpClientConfig} from '@/common/index.ts';
 import {Loading} from 'element-ui';
 
+let LoadData = {};
+
 class HttpClient {
 	#axios;
 
@@ -23,12 +25,14 @@ class HttpClient {
 		this.#axios.interceptors.request.use(
 			config => {
 				if (config['loading'] === true) {
-					Loading.service({
+					let ser = Loading.service({
 						lock: true,
 						text: 'Loading',
 						spinner: 'el-icon-loading',
 						background: 'rgba(0, 0, 0, 0.7)'
 					});
+					config['loading'] = '1212';
+					LoadData['1212'] = ser
 				}
 				return Promise.resolve(config);
 			},
