@@ -6,7 +6,7 @@
  */
 import userApi from '@/common/apis/user';
 import {responseHandler, storage} from '@/common/Utils';
-import jwtDncode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 export default {
 	state: {
@@ -18,8 +18,8 @@ export default {
 		},
 		SET_TOKEN(state, token) {
 			let {accessToken, refreshToken} = token;
-			let accessTokenObj = jwtDncode(accessToken);
-			let refreshTokenObj = jwtDncode(refreshToken);
+			let accessTokenObj = jwtDecode(accessToken);
+			let refreshTokenObj = jwtDecode(refreshToken);
 			storage().set('accessToken', accessToken, new Date().getTime() + accessTokenObj.exp * 1000);
 			storage().set('refreshToken', refreshToken, new Date().getTime() + refreshTokenObj.exp * 1000);
 			state.user = accessTokenObj;

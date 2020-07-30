@@ -1,18 +1,16 @@
 <template>
-	<main-layout>
-
-	</main-layout>
+	<el-main>
+		<slot></slot>
+	</el-main>
 </template>
 
 <script>
-	import MainLayout from '@/components/layout/MainLayout';
 	export default {
-		name: 'Index',
-		components: {MainLayout},
+		name: 'MainContent',
 		data() {
 			return {};
 		},
-		mounted() {
+		created() {
 		},
 		computed: {},
 		methods: {},
@@ -21,6 +19,6 @@
 </script>
 
 <style scoped lang="scss">
-	.md-index {
+	.el-main {
 	}
 </style>
