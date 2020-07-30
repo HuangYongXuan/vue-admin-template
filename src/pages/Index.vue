@@ -13,7 +13,9 @@
 			return {};
 		},
 		mounted() {
-			this.$store.dispatch('login')
+			this.$store.dispatch('login').then(data => {
+				console.info(data)
+			})
 		},
 		computed: {},
 		methods: {},

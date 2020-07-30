@@ -6,7 +6,7 @@
  */
 // eslint-disable-next-line no-unused-vars
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
-import {checkToken} from '@/common/Utils';
+import {checkToken, generateUuid} from '@/common/Utils';
 // eslint-disable-next-line no-unused-vars
 import {HttpClientConfig} from '@/common/index.ts';
 import {Loading} from 'element-ui';
@@ -25,14 +25,13 @@ class HttpClient {
 		this.#axios.interceptors.request.use(
 			config => {
 				if (config['loading'] === true) {
-					let ser = Loading.service({
+					let loadingServer = Loading.service({
 						lock: true,
-						text: 'Loading',
-						spinner: 'el-icon-loading',
-						background: 'rgba(0, 0, 0, 0.7)'
+						fullscreen: 'true',
+						background: 'rgba(0, 0, 0, 0.5)'
 					});
-					config['loading'] = '1212';
-					LoadData['1212'] = ser
+					config['loading'] = generateUuid('loading-', 10);
+					LoadData[config['loading']] = loadingServer;
 				}
 				return Promise.resolve(config);
 			},
@@ -44,6 +43,9 @@ class HttpClient {
 
 		this.#axios.interceptors.response.use(
 			response => {
+				if (response.config.loading) {
+					LoadData[response.config.loading].close();
+				}
 				return response.data;
 			},
 			error => {

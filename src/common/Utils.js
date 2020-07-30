@@ -9,6 +9,7 @@ import RotStorage from 'rot-storage/dist/rot-storage';
 import store from '@/store';
 // eslint-disable-next-line no-unused-vars
 import {AxiosRequestConfig} from 'axios';
+import {Message} from 'element-ui';
 
 /**
  * storage
@@ -45,8 +46,56 @@ export const checkToken = async (options) => {
 	});
 };
 
+/**
+ * 简单生成最长10位的Uuid
+ *
+ * @param prefix    {string}    default: ''     前缀
+ * @param size      {number}    default: 6      uuid长度 最长10位
+ * @return          {string}
+ */
+export const generateUuid = (prefix = '', size = 6) => {
+	return prefix + Math.random().toString(36).slice(2, size + 2);
+};
+
+
+/**
+ * 处理 http的响应结果
+ * @param data           {Object}        // response的数据 由axios提供返回
+ * @param ss            {boolean}       // 是否显示成功消息，默认不显示
+ * @param se            {boolean}       // 是否现象错误消息，默认显示
+ * @param sm            {string}        // 自定义成功消息
+ * @param em            {string}        // 自定义错误消息
+ * @returns 			{Promise<Object>}
+ */
+export const responseHandler = async (data, ss = false, se = true, sm = undefined, em = undefined) => {
+	if (!data) {
+		return Promise.reject(data);
+	}
+	if (data.success === true) {
+		if (ss) {
+			Message({
+				type: 'success',
+				message: sm || data.message || data.msg,
+				duration: 2000
+			});
+		}
+		return Promise.resolve(data.data);
+	} else {
+		if (se) {
+			Message({
+				type: 'error',
+				message: em || data.message || data.msg,
+				duration: 2000
+			});
+		}
+		return Promise.reject(data);
+	}
+};
+
 const Utils = {
-	storage
+	storage,
+	generateUuid,
+	responseHandler
 };
 
 Vue.prototype.$utils = Utils;
