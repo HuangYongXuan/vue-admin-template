@@ -6,10 +6,10 @@
  */
 import Vue from 'vue';
 import RotStorage from 'rot-storage/dist/rot-storage';
-import store from '@/store';
 // eslint-disable-next-line no-unused-vars
 import {AxiosRequestConfig} from 'axios';
 import {Message} from 'element-ui';
+import validator from 'el-form-validator';
 
 /**
  * storage
@@ -27,22 +27,12 @@ export const storage = () => {
 export const checkToken = async (options) => {
 	// 访问Token
 	const accessToken = storage().get('accessToken');
-	// 刷新Token
-	const refreshToken = storage().get('refreshToken');
-
 	// eslint-disable-next-line no-async-promise-executor
 	return new Promise(async (resolve) => {
 		if (!options.needToken) {
 			return resolve();
 		}
 		if (accessToken) return resolve();
-		else if (refreshToken) {
-			await store.dispatch('refreshToken').then(() => {
-				resolve();
-			});
-		} else {
-			console.info('用户没有登录');
-		}
 	});
 };
 
@@ -92,10 +82,15 @@ export const responseHandler = async (data, ss = false, se = true, sm = undefine
 	}
 };
 
+export const getValidator = () => {
+	return validator.verification;
+};
+
 const Utils = {
 	storage,
 	generateUuid,
-	responseHandler
+	responseHandler,
+	getValidator
 };
 
 Vue.prototype.$utils = Utils;

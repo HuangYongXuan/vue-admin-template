@@ -6,7 +6,7 @@
  */
 // eslint-disable-next-line no-unused-vars
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
-import {checkToken, generateUuid} from '@/common/Utils';
+import {checkToken, generateUuid, storage} from '@/common/Utils';
 // eslint-disable-next-line no-unused-vars
 import {HttpClientConfig} from '@/common/index.ts';
 import {Loading} from 'element-ui';
@@ -18,7 +18,7 @@ class HttpClient {
 
 	constructor() {
 		this.#axios = axios.create({
-			baseURL: '/api',
+			baseURL: '/',
 			timeout: 8000
 		});
 
@@ -32,6 +32,9 @@ class HttpClient {
 					});
 					config['loading'] = generateUuid('loading-', 10);
 					LoadData[config['loading']] = loadingServer;
+				}
+				if (config['needToken'] === true) {
+					config.headers['Authorization'] = storage().get('accessToken')
 				}
 				return Promise.resolve(config);
 			},
@@ -49,6 +52,10 @@ class HttpClient {
 				return response.data;
 			},
 			error => {
+				let {response} = error;
+				if (response && response.config.loading) {
+					LoadData[response.config.loading].close();
+				}
 				return Promise.reject(error);
 			}
 		);

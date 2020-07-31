@@ -20,8 +20,9 @@ VueRouter.prototype.replace = function replace(location) {
 Vue.use(VueRouter);
 
 import Base from '@/router/modules/_Base';
+import Admin from '@/router/modules/_Admin';
 
-export const routes = [...Base];
+export const routes = [...Admin, ...Base];
 
 export default new VueRouter({
 	base: process.env.VUE_APP_ROUTER_BASE,

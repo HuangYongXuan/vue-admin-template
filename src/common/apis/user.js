@@ -8,7 +8,7 @@ import Request from '@/common/Request';
 
 export let userApi = {
 	login(data) {
-		return Request.post('/auth/login', data, {needToken: false, loading: true});
+		return Request.post('/api/user/auth', data, {needToken: false, loading: true});
 	},
 };
 

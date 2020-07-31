@@ -6,10 +6,7 @@
  */
 
 export default [
-	{
-		name: 'Index',
-		path: '/index',
-		component: () => import('@/pages/Index')
-	},
+	{name: 'Index', path: '/index', component: () => import('@/pages/Index')},
+	{name: 'Login', path: '/login', component: () => import('@/pages/Login')},
 	{path: '*', redirect: {name: 'Index'}},
 ];

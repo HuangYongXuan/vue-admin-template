@@ -16,13 +16,11 @@ export default {
 		SET_USER(state, user) {
 			state.user = user;
 		},
-		SET_TOKEN(state, token) {
-			let {accessToken, refreshToken} = token;
-			let accessTokenObj = jwtDecode(accessToken);
-			let refreshTokenObj = jwtDecode(refreshToken);
-			storage().set('accessToken', accessToken, new Date().getTime() + accessTokenObj.exp * 1000);
-			storage().set('refreshToken', refreshToken, new Date().getTime() + refreshTokenObj.exp * 1000);
-			state.user = accessTokenObj;
+		SET_TOKEN(state, data) {
+			let {expiresAt, token} = data;
+			let userInfo = jwtDecode(token);
+			storage().set('accessToken', token, expiresAt * 1000);
+			state.user = userInfo;
 		}
 	},
 	actions: {
