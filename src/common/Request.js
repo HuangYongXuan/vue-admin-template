@@ -24,6 +24,11 @@ class HttpClient {
 
 		this.#axios.interceptors.request.use(
 			config => {
+				for (let key in config.params) {
+					if (config.params[key] === '') {
+						config.params[key] = undefined;
+					}
+				}
 				if (config['loading'] === true) {
 					let loadingServer = Loading.service({
 						lock: true,
@@ -34,7 +39,7 @@ class HttpClient {
 					LoadData[config['loading']] = loadingServer;
 				}
 				if (config['needToken'] === true) {
-					config.headers['Authorization'] = storage().get('accessToken')
+					config.headers['Authorization'] = 'Bearer ' + storage().get('accessToken')
 				}
 				return Promise.resolve(config);
 			},

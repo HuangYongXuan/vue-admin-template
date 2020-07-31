@@ -82,15 +82,66 @@ export const responseHandler = async (data, ss = false, se = true, sm = undefine
 	}
 };
 
+/**
+ * 获取验证方法
+ * @returns {StaticValidator.verification}
+ */
 export const getValidator = () => {
 	return validator.verification;
+};
+
+/**
+ * 转换数据
+ * @param data
+ * @param columns
+ * @returns {{}}
+ */
+export const copyData = (data, columns = []) => {
+	let obj = {};
+	columns.forEach(column => {
+		obj[column] = data[column];
+	});
+	return obj;
+};
+
+/**
+ * 深度复制obj
+ * @param object
+ * @returns {{}|*}
+ */
+export const deepCopy = (object) => {
+	if (object === null || object === undefined || typeof object !== 'object') {
+		return object;
+	}
+	let isArray = Array.isArray(object);
+	let newObj = {};
+	if (isArray) {
+		newObj = [];
+	}
+	for (let key in object) {
+		let v = object[key];
+
+		if (typeof v === 'object') {
+			newObj[key] = deepCopy(v);
+		} else {
+			if (isArray) {
+				newObj.push(v);
+			} else {
+				newObj[key] = v;
+			}
+		}
+	}
+
+	return newObj;
 };
 
 const Utils = {
 	storage,
 	generateUuid,
 	responseHandler,
-	getValidator
+	getValidator,
+	copyData,
+	deepCopy
 };
 
 Vue.prototype.$utils = Utils;

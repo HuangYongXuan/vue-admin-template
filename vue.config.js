@@ -74,9 +74,9 @@ module.exports = {
 		proxy: {
 			'/api': {
 				target: process.env.VUE_APP_BASE_API_URL,
-				pathRewrite: {
-					'^/api': ''
-				}
+				// pathRewrite: {
+				// 	'^/api': ''
+				// }
 			}
 		}
 	},

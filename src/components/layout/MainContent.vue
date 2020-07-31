@@ -20,5 +20,7 @@
 
 <style scoped lang="scss">
 	.el-main {
+		margin: 0;
+		padding: 0;
 	}
 </style>

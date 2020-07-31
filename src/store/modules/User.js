@@ -20,7 +20,7 @@ export default {
 			let {expiresAt, token} = data;
 			let userInfo = jwtDecode(token);
 			storage().set('accessToken', token, expiresAt * 1000);
-			state.user = userInfo;
+			state.user = userInfo.User;
 		}
 	},
 	actions: {

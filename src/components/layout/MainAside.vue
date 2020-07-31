@@ -5,16 +5,20 @@
 			<span>Vue Admin Template</span>
 		</div>
 		<div class="md-user-data" :style="{backgroundImage: 'url(' + cardBackgroundImg +')'}">
-			<img src="@/assets/images/avatar/avatar.jpg" alt="avatar"/>
+			<img :src="user.avatar" alt="avatar"/>
 			<div class="md-username">
-				<span>Dr. Codex Lantern</span>
-				<span>Toronto, Canada</span>
+				<span>{{user.username}}</span>
+				<span class="tag-group">
+					{{roles.join(',')}}
+				</span>
 			</div>
 		</div>
 	</el-aside>
 </template>
 
 <script>
+	import {mapGetters} from 'vuex';
+
 	export default {
 		name: 'MainAside',
 		data() {
@@ -25,7 +29,15 @@
 		},
 		created() {
 		},
-		computed: {},
+		computed: {
+			...mapGetters({user: 'user'}),
+			roles() {
+				if (this.user && this.user.roles) {
+					return this.user.roles.map(role => role.displayName);
+				}
+				return [];
+			}
+		},
 		methods: {},
 		watch: {}
 	};
@@ -67,11 +79,31 @@
 			justify-content: center;
 			align-items: center;
 			text-align: center;
+			padding: 10px;
 
 			img {
 				width: 60px;
 				height: 60px;
 				border-radius: 50%;
+			}
+
+			.md-username {
+				padding-left: 10px;
+				color: white;
+				display: inline-block;
+				width: 160px;
+				overflow: hidden;
+
+				> span {
+					display: block;
+					text-align: left;
+					line-height: 28px;
+
+					&:last-child {
+						color: rgba(255, 255, 255, .75);
+						font-size: 12px;
+					}
+				}
 			}
 		}
 	}

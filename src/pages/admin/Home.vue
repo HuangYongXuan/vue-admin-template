@@ -1,12 +1,14 @@
 <template>
 	<div class="md-Home">
-		123
+		<menu-list/>
 	</div>
 </template>
 
 <script>
+	import MenuList from '@/pages/admin/system/MenuList';
 	export default {
 		name: 'Home',
+		components: {MenuList},
 		data() {
 			return {};
 		},
