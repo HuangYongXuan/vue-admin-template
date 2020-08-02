@@ -28,11 +28,12 @@ export const checkToken = async (options) => {
 	// 访问Token
 	const accessToken = storage().get('accessToken');
 	// eslint-disable-next-line no-async-promise-executor
-	return new Promise(async (resolve) => {
+	return new Promise(async (resolve, reject) => {
 		if (!options.needToken) {
 			return resolve();
 		}
 		if (accessToken) return resolve();
+		else reject('_un_login');
 	});
 };
 
@@ -135,13 +136,29 @@ export const deepCopy = (object) => {
 	return newObj;
 };
 
+/**
+ * 为字段生成验证规则
+ * @param rules
+ * @param trigger
+ * @returns {{validator: StaticValidator.verification, rules: *, trigger: string}}
+ */
+export const genElFormRule = (rules, trigger = 'blur') => {
+	return {
+		rules,
+		validator: getValidator(),
+		trigger: trigger
+	};
+};
+
+
 const Utils = {
 	storage,
 	generateUuid,
 	responseHandler,
 	getValidator,
 	copyData,
-	deepCopy
+	deepCopy,
+	genElFormRule
 };
 
 Vue.prototype.$utils = Utils;

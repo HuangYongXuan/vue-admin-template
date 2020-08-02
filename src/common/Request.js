@@ -6,10 +6,11 @@
  */
 // eslint-disable-next-line no-unused-vars
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
-import {checkToken, generateUuid, storage} from '@/common/Utils';
 // eslint-disable-next-line no-unused-vars
 import {HttpClientConfig} from '@/common/index.ts';
-import {Loading} from 'element-ui';
+import {checkToken, generateUuid, storage} from '@/common/Utils';
+import {Loading, MessageBox} from 'element-ui';
+import router from '@/router';
 
 let LoadData = {};
 
@@ -39,7 +40,7 @@ class HttpClient {
 					LoadData[config['loading']] = loadingServer;
 				}
 				if (config['needToken'] === true) {
-					config.headers['Authorization'] = 'Bearer ' + storage().get('accessToken')
+					config.headers['Authorization'] = 'Bearer ' + storage().get('accessToken');
 				}
 				return Promise.resolve(config);
 			},
@@ -118,9 +119,21 @@ class HttpClient {
 	async _send(config) {
 		return await checkToken(config).then(async () => {
 			return await this.#axios(config);
+		}).catch((err) => {
+			if (showLoginConfirm === false && err === '_un_login') {
+				showLoginConfirm = true;
+				MessageBox.confirm('当前登录已退出，是否重新登录？', {
+					title: '错误！', type: 'success', confirmButtonText: '确定',
+					cancelButtonText: '取消'
+				}).then(() => {
+					router.push({name: 'Login'});
+				}).finally(() => showLoginConfirm = false);
+			}
 		});
 	}
 }
+
+let showLoginConfirm = false;
 
 export const Request = new HttpClient();
 

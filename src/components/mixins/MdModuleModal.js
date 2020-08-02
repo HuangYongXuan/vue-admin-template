@@ -17,6 +17,14 @@ export default {
 	computed: {
 		infoMod() {
 			return this.mode === 'info';
+		},
+
+		modeStr() {
+			let t = {
+				add: '创建',
+				edit: '编辑'
+			};
+			return t[this.mode] || '操作';
 		}
 	},
 	methods: {
