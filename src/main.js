@@ -10,13 +10,16 @@ import store from '@/store';
 import App from '@/App.vue';
 import '@/assets/scss/app.scss';
 import '@/common/Utils';
+import '@/router/RouterHook';
 
 Vue.use(ElementUi);
 
 Vue.config.productionTip = false;
 
-new Vue({
-	router,
-	store,
-	render: h => h(App)
-}).$mount('#app');
+store.dispatch('GenerateRoutes').finally(() => {
+	new Vue({
+		router,
+		store,
+		render: h => h(App)
+	}).$mount('#app');
+});

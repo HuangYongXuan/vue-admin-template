@@ -10,6 +10,7 @@ import RotStorage from 'rot-storage/dist/rot-storage';
 import {AxiosRequestConfig} from 'axios';
 import {Message} from 'element-ui';
 import validator from 'el-form-validator';
+import router from '@/router';
 
 /**
  * storage
@@ -150,6 +151,72 @@ export const genElFormRule = (rules, trigger = 'blur') => {
 	};
 };
 
+/**
+ *
+ * @param menus
+ */
+export const genRouterMenu = async (menus = []) => {
+	let routers = menus.filter(item => ['menu', 'list'].includes(item.menuType)).map(menu => {
+		return {
+			id: menu.menuId,
+			parentId: menu.parentId,
+			path: menu.path,
+			name: menu.name,
+			component: () => import('@/' + menu.component + '.vue'),
+			meta: {
+				icon: menu.icon,
+				activeIcon: menu.activeIcon,
+				menuName: menu.menuName,
+				visible: menu.visible
+			}
+		};
+	});
+	let menuData = treeData(routers);
+	await router.addRoutes(menuData);
+	return JSON.parse(JSON.stringify(menuData));
+};
+
+/**
+ * 生成树行数据
+ * @param source
+ * @param id
+ * @param parentId
+ * @param children
+ * @returns {*}
+ */
+export const treeData = (source, id, parentId, children) => {
+	id = id || 'id';
+	parentId = parentId || 'parentId';
+	children = children || 'children';
+	const cloneData = deepCopy(source);
+
+	let result = [];
+	if (!Array.isArray(cloneData)) {
+		return result;
+	}
+
+	cloneData.forEach(item => {
+		delete item.children;
+	});
+	let map = {};
+	cloneData.forEach(item => {
+		map[item[id]] = item;
+	});
+	cloneData.forEach(item => {
+		let parent = map[item[parentId]];
+		if (parent) {
+			(parent[children] || (parent[children] = [])).push(item);
+		} else {
+			result.push(item);
+		}
+	});
+
+	return result;
+};
+
+export const checkPermission = () => {
+	return true;
+};
 
 const Utils = {
 	storage,

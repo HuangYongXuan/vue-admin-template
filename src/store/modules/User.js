@@ -25,7 +25,7 @@ export default {
 	},
 	actions: {
 		async login({commit}, data) {
-			return await userApi.login(data).then(async res => {
+			return await userApi.auth(data).then(async res => {
 				return await responseHandler(res).then(data => {
 					commit('SET_TOKEN', data);
 					return true;

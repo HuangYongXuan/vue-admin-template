@@ -13,14 +13,17 @@
 				</span>
 			</div>
 		</div>
+		<main-aside-menu-content :menus="router" v-if="router && router.length > 0"/>
 	</el-aside>
 </template>
 
 <script>
 	import {mapGetters} from 'vuex';
+	import MainAsideMenuContent from '@/components/layout/MainAsideMenuContent';
 
 	export default {
 		name: 'MainAside',
+		components: {MainAsideMenuContent},
 		data() {
 			return {
 				width: 275,
@@ -30,7 +33,7 @@
 		created() {
 		},
 		computed: {
-			...mapGetters({user: 'user'}),
+			...mapGetters({user: 'user', router: 'router'}),
 			roles() {
 				if (this.user && this.user.roles) {
 					return this.user.roles.map(role => role.displayName);
@@ -104,6 +107,11 @@
 						font-size: 12px;
 					}
 				}
+			}
+		}
+
+		::v-deep {
+			.el-menu {
 			}
 		}
 	}

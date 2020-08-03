@@ -61,6 +61,11 @@
 		methods: {
 			onSubmit() {
 				this.$store.dispatch('login', this.form).then(() => {
+					this.getUserMenu();
+				});
+			},
+			getUserMenu() {
+				this.$store.dispatch('getUserMenu').then(() => {
 					this.$router.push({name: 'AdminHome'});
 				});
 			}

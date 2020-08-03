@@ -7,9 +7,21 @@
 import Request from '@/common/Request';
 
 export let userApi = {
-	login(data) {
+	/**
+	 * 用户授权
+	 * @param data
+	 * @returns {Promise<AxiosResponse<*>>}
+	 */
+	auth(data) {
 		return Request.post('/api/user/auth', data, {needToken: false, loading: true});
 	},
+	/**
+	 * 获取用户的菜单
+	 * @returns {Promise<AxiosResponse<*>>}
+	 */
+	menu() {
+		return Request.get('/api/user/menu', {}, {needToken: true, loading: true})
+	}
 };
 
 export default userApi;

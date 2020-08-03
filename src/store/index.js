@@ -11,9 +11,11 @@ import VuexLocalSync from '@/store/plugins/VuexStorage';
 Vue.use(Vuex);
 
 import User from '@/store/modules/User';
+import Menu from '@/store/modules/Menu';
 
 const modules = {
-	User
+	User,
+	Menu
 };
 
 const VueLocalSyncPlugin = new VuexLocalSync({
