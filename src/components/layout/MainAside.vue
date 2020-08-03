@@ -1,5 +1,5 @@
 <template>
-	<el-aside :width="width + 'px'">
+	<el-aside :width="(collapsed ? 65 : 270) + 'px'">
 		<div class="md-logo">
 			<img src="@/assets/images/logo.png" alt="logo">
 			<span>Vue Admin Template</span>
@@ -13,7 +13,8 @@
 				</span>
 			</div>
 		</div>
-		<main-aside-menu-content :menus="router" v-if="router && router.length > 0"/>
+		<main-aside-menu-content :menus="router" v-if="router && router.length > 0" :collapsed="collapsed"
+								 class="md-aside-content"/>
 	</el-aside>
 </template>
 
@@ -27,7 +28,8 @@
 		data() {
 			return {
 				width: 275,
-				cardBackgroundImg: require('@/assets/images/cover-2-lg.png')
+				cardBackgroundImg: require('@/assets/images/cover-2-lg.png'),
+				collapsed: false
 			};
 		},
 		created() {
@@ -41,7 +43,11 @@
 				return [];
 			}
 		},
-		methods: {},
+		methods: {
+			collapseAction(b) {
+				this.collapsed = b;
+			}
+		},
 		watch: {}
 	};
 </script>
@@ -51,6 +57,7 @@
 		background-image: linear-gradient(270deg, rgba(51, 148, 225, .18), transparent);
 		background-color: #584475;
 		height: 100vh;
+		transition: all .3s;
 
 		.md-logo {
 			height: 60px;
@@ -111,8 +118,13 @@
 		}
 
 		::v-deep {
+			.md-aside-content:not(.el-menu--collapse) {
+				width: 270px;
+			}
+
 			.el-menu {
 				background-color: transparent;
+				border-right: none;
 
 				.el-submenu {
 					.el-submenu__title {
@@ -130,9 +142,12 @@
 
 					&.is-active {
 						.el-submenu__title {
-							background-color: rgba(255,255,255,.04);
+							background-color: rgba(255, 255, 255, .04);
 							box-shadow: inset 3px 0 0 #886ab5;
 							color: white;
+							i {
+								color: white;
+							}
 						}
 					}
 
@@ -154,7 +169,8 @@
 					}
 
 					&.is-active {
-
+						color: white;
+						background-color: rgba(0, 0, 0, .1);
 					}
 				}
 			}

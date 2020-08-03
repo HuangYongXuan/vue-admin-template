@@ -1,17 +1,28 @@
 <template>
-	<el-header>m</el-header>
+	<el-header>
+		<el-button type="text" size="medium" class="md-aside-icon-btn" @click="onClick">
+			<i :class="collapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'"></i>
+		</el-button>
+	</el-header>
 </template>
 
 <script>
 	export default {
 		name: 'MainHeader',
 		data() {
-			return {};
+			return {
+				collapse: false
+			};
 		},
 		created() {
 		},
 		computed: {},
-		methods: {},
+		methods: {
+			onClick () {
+				this.collapse = !this.collapse
+				this.$emit('collapse', this.collapse)
+			}
+		},
 		watch: {}
 	};
 </script>
@@ -26,5 +37,12 @@
 		height: 4.125rem;
 		position: relative;
 		z-index: 1000;
+
+		.md-aside-icon-btn {
+			i {
+				color: #999999;
+				font-size: 20px;
+			}
+		}
 	}
 </style>

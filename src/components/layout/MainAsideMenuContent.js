@@ -82,7 +82,6 @@ export default {
 			}
 			return this.renderItem(item);
 		});
-		console.info(menuTree);
 		return (
 			<Menu {...{props}}>
 				{menuTree}

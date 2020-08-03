@@ -1,8 +1,8 @@
 <template>
 	<el-container class="md-MainLayout">
-		<main-aside/>
+		<main-aside ref="aside"/>
 		<el-container direction="vertical">
-			<main-header/>
+			<main-header  @collapse="onCollapse" ref="header"/>
 			<main-content>
 				<router-view/>
 			</main-content>
@@ -26,7 +26,11 @@
 		created() {
 		},
 		computed: {},
-		methods: {},
+		methods: {
+			onCollapse (b) {
+				this.$refs.aside.collapseAction(b)
+			}
+		},
 		watch: {}
 	};
 </script>
