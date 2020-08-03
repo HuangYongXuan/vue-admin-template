@@ -112,6 +112,51 @@
 
 		::v-deep {
 			.el-menu {
+				background-color: transparent;
+
+				.el-submenu {
+					.el-submenu__title {
+						color: #af9fc7;
+
+						&:hover {
+							background-color: rgba(0, 0, 0, .1);
+							color: white;
+
+							i {
+								color: white;
+							}
+						}
+					}
+
+					&.is-active {
+						.el-submenu__title {
+							background-color: rgba(255,255,255,.04);
+							box-shadow: inset 3px 0 0 #886ab5;
+							color: white;
+						}
+					}
+
+					.el-menu--inline {
+						background-color: rgba(0, 0, 0, .1);
+					}
+				}
+
+				.el-menu-item {
+					color: #af9fc7;
+
+					&:hover {
+						background-color: rgba(0, 0, 0, .1);
+						color: white;
+
+						i {
+							color: white;
+						}
+					}
+
+					&.is-active {
+
+					}
+				}
 			}
 		}
 	}
