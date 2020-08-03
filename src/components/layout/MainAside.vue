@@ -1,5 +1,5 @@
 <template>
-	<el-aside :width="(collapsed ? 65 : 270) + 'px'">
+	<el-aside :width="(collapsed ? 65 : 270) + 'px'" :class="{'md-aside-collapsed': collapsed}">
 		<div class="md-logo">
 			<img src="@/assets/images/logo.png" alt="logo">
 			<span>Vue Admin Template</span>
@@ -77,11 +77,17 @@
 
 			span {
 				padding-left: 5px;
+				transition: width .3s;
+				display: inline-block;
+				width: 220px;
+				white-space: nowrap;
 			}
 		}
 
 		.md-user-data {
 			height: 150px;
+			transition: height .3s, padding .3s, opacity .3s;
+			opacity: 1;
 			background-size: auto 100%;
 			background-repeat: no-repeat;
 			background-position: center;
@@ -117,6 +123,22 @@
 			}
 		}
 
+		&.md-aside-collapsed {
+			.md-logo {
+				span {
+					width: 0;
+					overflow: hidden;
+				}
+			}
+
+			.md-user-data {
+				height: 0;
+				overflow: hidden;
+				padding: 0;
+				opacity: 0;
+			}
+		}
+
 		::v-deep {
 			.md-aside-content:not(.el-menu--collapse) {
 				width: 270px;
@@ -145,6 +167,7 @@
 							background-color: rgba(255, 255, 255, .04);
 							box-shadow: inset 3px 0 0 #886ab5;
 							color: white;
+
 							i {
 								color: white;
 							}
