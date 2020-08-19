@@ -66,7 +66,7 @@
 			},
 			getUserMenu() {
 				this.$store.dispatch('getUserMenu').then(() => {
-					this.$router.push({name: 'AdminHome'});
+					this.$router.push({name: 'Index'});
 				});
 			}
 		},

@@ -5,16 +5,4 @@
  * @version     1.0
  */
 export default [
-	{
-		name: 'Admin',
-		path: '/admin',
-		component: () => import('@/components/layout/MainLayout'),
-		children: [
-			{
-				path: 'home',
-				name: 'AdminHome',
-				component: () => import('@/pages/admin/Home')
-			}
-		]
-	}
 ];

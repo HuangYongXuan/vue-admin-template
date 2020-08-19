@@ -61,7 +61,7 @@
 				<el-col :span="18">
 					<el-form-item>
 						<el-switch v-model="data.visible"></el-switch>
-						<span style="padding-right: 20px">是否隐藏</span>
+						<span style="padding-right: 20px"> 是否显示</span>
 						<el-switch v-model="data.isEnable"></el-switch>
 						<span>是否启用</span>
 					</el-form-item>
