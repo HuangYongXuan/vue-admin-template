@@ -1,81 +1,110 @@
 <template>
 	<div class="md-role-list md-content">
-		<md-form :model="query" @submit="getData" inline>
-			<el-form-item>
-				<el-input v-model="query.name" placeholder="输入名称"/>
-			</el-form-item>
-			<el-form-item>
-				<el-button type="primary" icon="el-icon-search" native-type="submit">搜索</el-button>
-				<el-button type="success" icon="el-icon-plus" @click="add">创建角色</el-button>
-			</el-form-item>
-		</md-form>
-		<el-table :data="roleList" row-key="id" border>
-			<el-table-column prop="name" label="角色名称" align="left" width="140"/>
-			<el-table-column prop="displayName" label="显示名称" align="center"/>
-			<el-table-column prop="isDefault" label="是否默认" align="center" width="80">
-				<template slot-scope="record">
-					<el-switch v-model="record.isDefault"/>
-				</template>
-			</el-table-column>
-			<el-table-column prop="canDelete" label="能否删除" align="center" width="80">
-				<template slot-scope="record">
-					<el-switch v-model="record.canDelete" disabled/>
-				</template>
-			</el-table-column>
-			<el-table-column prop="createdAt" label="创建日期" align="center" :formatter="dateFormatter"/>
-			<el-table-column label="操作" align="right" width="220" fixed="right">
-				<template slot-scope="record">
-					<el-button size="mini" type="success" @click="add({parentId: record.row.id})" v-if="record.row.menuType !== 'button'">添加</el-button>
-					<el-button size="mini" type="primary" @click="edit(record)">编辑</el-button>
-					<el-button size="mini" type="danger" @click="remove(record)" :disabled="!record.canDelete">删除</el-button>
-				</template>
-			</el-table-column>
-		</el-table>
+		<vxe-toolbar>
+			<template v-slot:buttons>
+				<el-button @click="$refs.xTable.setAllCheckboxRow(true)">全部</el-button>
+				<el-button @click="$refs.xTable.clearCheckboxRow()">清除选择</el-button>
+				<el-button type="danger" v-if="selectorData && selectorData.length > 0">删除选择</el-button>
+				<el-button @click="save">保存</el-button>
+			</template>
+			<template #tools>
+				<md-form :model="query" @submit="getData" inline>
+					<el-form-item>
+						<el-input v-model="query.name" placeholder="输入名称"/>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" icon="el-icon-search" native-type="submit">搜索</el-button>
+						<el-button type="success" icon="el-icon-plus" @click="add">创建角色</el-button>
+					</el-form-item>
+				</md-form>
+			</template>
+		</vxe-toolbar>
+
+		<vxe-grid :data="roleList" :columns="columns" border ref="xTable" column-key>
+			<template #canDelete="{row}">
+				{{row.canDelete}}
+			</template>
+		</vxe-grid>
 	</div>
 </template>
 
 <script>
-import MdForm from '@/components/form/MdForm';
-import roleApi from '@/common/apis/role';
-import moment from 'moment';
+	import MdForm from '@/components/form/MdForm';
+	import roleApi from '@/common/apis/role';
+	import moment from 'moment';
+	import Sortable from 'sortablejs';
 
-export default {
-	name: 'RoleList',
-	components: {MdForm},
-	data() {
-		return {
-			query: {},
-			roleList: []
-		};
-	},
-	created() {
-		this.getData();
-	},
-	computed: {},
-	methods: {
-		getData() {
-			roleApi.list(this.query).then(res => {
-				this.$utils.responseHandler(res).then((data) => {
-					this.roleList = data;
+	export default {
+		name: 'RoleList',
+		components: {MdForm},
+		data() {
+			return {
+				query: {},
+				roleList: [],
+				selectorData: [],
+				columns: [
+					{type: 'checkbox', width: 120, align: 'center', resizable: true},
+					{type: 'seq', width: '60', align: 'center', resizable: true},
+					{field: 'name', title: '名称', align: 'center', resizable: true},
+					{field: 'displayName', title: '显示名称', align: 'center', resizable: true},
+					{field: 'isDefault', title: '是否默认', align: 'center', resizable: true},
+					{field: 'canDelete', title: '能否删除', align: 'center', resizable: true, slots: {default: 'canDelete'}},
+					{field: 'createdAt', title: '创建时间', align: 'center', formatter: this.dateFormatter}
+				]
+			};
+		},
+		created() {
+			this.getData();
+			this.columnDrop();
+		},
+		beforeDestroy() {
+			if (this.sortable) {
+				this.sortable.destroy();
+			}
+		},
+		computed: {},
+		methods: {
+			columnDrop() {
+				this.$nextTick(() => {
+					let xTable = this.$refs.xTable;
+					this.sortable = Sortable.create(xTable.$el.querySelector('.body--wrapper>.vxe-table--header .vxe-header--row'), {
+						handle: '.vxe-header--column:not(.col--fixed)',
+						onEnd: ({newIndex, oldIndex}) => {
+							let currRow = this.columns.splice(oldIndex, 1)[0]
+							this.columns.splice(newIndex, 0, currRow)
+						}
+					});
 				});
-			});
-		},
-		add() {
+			},
+			getData() {
+				roleApi.list(this.query).then(res => {
+					this.$utils.responseHandler(res).then((data) => {
+						this.roleList = data;
+					});
+				});
+			},
+			add() {
 
-		},
-		edit() {
+			},
+			edit() {
 
-		},
-		remove() {
+			},
+			remove() {
 
+			},
+			onSelect({records}) {
+				this.selectorData = records;
+			},
+			dateFormatter({cellValue}) {
+				return moment(cellValue).format('YYYY-MM-DD HH:mm:ss');
+			},
+			save() {
+				let id = this.$refs.xTable.$props.id;
+				console.info(id, this.$refs.xTable.getColumns());
+			}
 		},
-		dateFormatter (row, column, cellValue) {
-
-			return moment(cellValue).format('YYYY-MM-DD HH:mm:ss')
-		}
-	},
-	watch: {}
-};
+		watch: {}
+	};
 </script>
 
 <style scoped lang="scss">

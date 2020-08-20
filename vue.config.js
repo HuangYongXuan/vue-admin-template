@@ -11,14 +11,17 @@ let happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length});
 const assetsCDN = {
 	// main.js里引入了对应的less以使 webpack-theme-color-replacer工作
 	css: [
-		'https://cdn.jsdelivr.net/npm/element-ui@2.13.2/lib/theme-chalk/index.css'
+		'https://cdn.jsdelivr.net/npm/element-ui@2.13.2/lib/theme-chalk/index.css',
+		'https://cdn.jsdelivr.net/npm/vxe-table/lib/index.css'
 	],
 	js: [
 		'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js',
 		'https://cdn.jsdelivr.net/npm/axios@0.19.2/dist/axios.min.js',
 		'https://cdn.jsdelivr.net/npm/vue-router@3.3.4/dist/vue-router.min.js',
 		'https://cdn.jsdelivr.net/npm/vuex@3.5.1/dist/vuex.min.js',
-		'https://cdn.jsdelivr.net/npm/element-ui@2.13.2/lib/element-ui.common.min.js'
+		'https://cdn.jsdelivr.net/npm/element-ui@2.13.2/lib/element-ui.common.min.js',
+		'https://cdn.jsdelivr.net/npm/xe-utils',
+		'https://cdn.jsdelivr.net/npm/vxe-table'
 	]
 };
 
@@ -35,7 +38,9 @@ module.exports = {
 				'axios': 'axios',
 				'vue-router': 'VueRouter',
 				'vuex': 'Vuex',
-				'element-ui': 'ElementUi'
+				'element-ui': 'ElementUi',
+				'xe-utils': '',
+				'vxe-table': 'VXETable'
 			};
 		}
 		config.plugins.push(new HappyPack({
@@ -73,7 +78,7 @@ module.exports = {
 		hotOnly: false,
 		proxy: {
 			'/api': {
-				target: process.env.VUE_APP_BASE_API_URL,
+				target: process.env.VUE_APP_BASE_API_URL
 				// pathRewrite: {
 				// 	'^/api': ''
 				// }
